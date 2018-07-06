@@ -3,11 +3,13 @@ package cemilcakir.com.hotel
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import cemilcakir.com.hotel.Models.RoomModel
+import kotlinx.android.synthetic.main.activity_room_details.*
 
 class RoomDetailsActivity : AppCompatActivity() {
 
     companion object {
-        lateinit var roomId:String
+        lateinit var roomModel: RoomModel
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +17,12 @@ class RoomDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_room_details)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        txtRoomCapacity.text = roomModel.capacity.toString() + " Kişilik"
+        txtRoomDetail.text = roomModel.roomDetail
+        txtRoomFloor.text = roomModel.floor.toString() + ". Kat"
+        txtRoomPrice.text = roomModel.price.toString() +" TL"
+        txtRoomSize.text = roomModel.capacity.toString() + " m²"
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

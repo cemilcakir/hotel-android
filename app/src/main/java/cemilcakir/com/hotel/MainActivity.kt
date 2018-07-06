@@ -1,5 +1,6 @@
 package cemilcakir.com.hotel
 
+import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import cemilcakir.com.hotel.Adapters.TabAdapter
@@ -7,6 +8,9 @@ import cemilcakir.com.hotel.Fragments.GalleryFragment
 import cemilcakir.com.hotel.Fragments.HotelsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.appbar_main.*
+import org.json.JSONArray
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,5 +27,6 @@ class MainActivity : AppCompatActivity() {
 
         viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)
+
     }
 }

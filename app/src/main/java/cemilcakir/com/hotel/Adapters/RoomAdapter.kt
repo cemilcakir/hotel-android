@@ -32,9 +32,6 @@ class RoomAdapter(private val myDataset: ArrayList<RoomModel>) :
 
         val roomModel:RoomModel = myDataset.get(position)
 
-        val imgRoom:ImageView = holder.cardView.findViewById(R.id.imgRoom)
-        Glide.with(imgRoom).load("http://206.189.239.139:8000/images/8fad0906ce751e05f442eaec56d13d87.jpeg").into(imgRoom)
-
         val txtRoomType: TextView = holder.cardView.findViewById(R.id.txtRoomType)
         txtRoomType.text = roomModel.roomType
 
@@ -43,7 +40,7 @@ class RoomAdapter(private val myDataset: ArrayList<RoomModel>) :
 
         holder.cardView.setOnClickListener {
             val i = Intent(it.context, RoomDetailsActivity::class.java)
-            RoomDetailsActivity.roomId = roomModel.id.toString()
+            RoomDetailsActivity.roomModel = roomModel
             startActivity(it.context, i ,null)
         }
     }

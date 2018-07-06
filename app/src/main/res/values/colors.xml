@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#995604</color>
     <color name="colorAccent">#915200</color>
     <color name="opblack">#995604</color>
-    <color name="background">#ccc</color>
-    <color name="cell">#9b9892</color>
+    <color name="background">#f1eeee</color>
+    <color name="cell">#ffe2a9</color>
 </resources>

@@ -30,9 +30,6 @@ class HotelAdapter(private val myDataset: ArrayList<HotelModel>) :
 
         val hotelModel:HotelModel = myDataset.get(position)
 
-        val imgHotel:ImageView = holder.cardView.findViewById(R.id.imgHotel)
-        Glide.with(imgHotel).load("http://206.189.239.139:8000/images/8fad0906ce751e05f442eaec56d13d87.jpeg").into(imgHotel)
-
         val txtHotelName: TextView = holder.cardView.findViewById(R.id.txtHotelName)
         txtHotelName.text = hotelModel.hotelName
 
@@ -41,7 +38,7 @@ class HotelAdapter(private val myDataset: ArrayList<HotelModel>) :
 
         holder.cardView.setOnClickListener {
             val i = Intent(it.context, HotelDetailsActivity::class.java)
-            HotelDetailsActivity.hotelId = hotelModel.id.toString()
+            HotelDetailsActivity.hotelModel = hotelModel
             startActivity(it.context, i ,null)
         }
     }
