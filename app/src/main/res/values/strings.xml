@@ -2,5 +2,7 @@
     <string name="app_name">Hotel</string>
     <string name="title_activity_main">Bitirme 2 HotelApp</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_hotel_details">Otel Detayları</string>
+    <string name="title_activity_room_details">Oda Detayları</string>
 
 </resources>

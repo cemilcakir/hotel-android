@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.MenuItem
 import cemilcakir.com.hotel.Adapters.HotelAdapter
 import cemilcakir.com.hotel.Adapters.RoomAdapter
 import cemilcakir.com.hotel.Models.HotelModel
@@ -30,7 +31,8 @@ class HotelDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hotel_details)
-        setSupportActionBar(toolbar_hotelDetails)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         viewManager = LinearLayoutManager(this)
         recyclerView = findViewById(R.id.listRooms)
@@ -60,12 +62,25 @@ class HotelDetailsActivity : AppCompatActivity() {
                     .build()
             val type = Types.newParameterizedType(List::class.java, RoomModel::class.java)
             val adapter = moshi.adapter<ArrayList<RoomModel>>(type)
-            val text : String = "[{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2},{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2},{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2}]"
+            val text : String = "[{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2},{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2},{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2},{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2},{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2},{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2},{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2},{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2},{\"id\":2,\"type\":\"test\",\"price\":21,\"floor\":21,\"size\":21,\"capacity\":21,\"detail\":\"ewqqqqqqeqweqweqwqweeqw\",\"hotel_id\":2}]"
             val rooms:ArrayList<RoomModel> = adapter.fromJson(text) as ArrayList<RoomModel>
 
             viewAdapter = RoomAdapter(rooms)
             recyclerView.adapter = viewAdapter
 
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 }

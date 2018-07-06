@@ -20,6 +20,11 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.json.JSONObject
 import java.net.URL
+import com.google.gson.JsonObject
+import com.koushikdutta.async.future.FutureCallback
+import com.koushikdutta.ion.Ion
+
+
 
 
 class HotelsFragment : android.support.v4.app.Fragment(){
@@ -33,10 +38,10 @@ class HotelsFragment : android.support.v4.app.Fragment(){
         // Inflate the layout for this fragment
         var view:View = inflater.inflate(R.layout.fragment_hotels, container, false)
 
-        viewManager = LinearLayoutManager(activity)
-        recyclerView = view.findViewById(R.id.listHotels)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = viewManager
+//        viewManager = LinearLayoutManager(activity)
+//        recyclerView = view.findViewById(R.id.listHotels)
+//        recyclerView.setHasFixedSize(true)
+//        recyclerView.layoutManager = viewManager
 
         Handler().postDelayed({
             getData()
@@ -47,8 +52,14 @@ class HotelsFragment : android.support.v4.app.Fragment(){
 
     fun getData()
     {
+        Ion.with(context)
+                .load("http://localhost:8001/hotels")
+                .asJsonObject()
+                .setCallback { e, result ->
+                    println(result)
+                }
 
-        "http://206.189.239.139:8000/hotels".httpGet().responseJson { request, response, result ->
+//        "http://localhost:8001/hotels".httpGet().responseJson { request, response, result ->
 //            val data: JSONObject = result.get().obj()
 //            val moshi = Moshi.Builder()
 //                    .add(KotlinJsonAdapterFactory())
@@ -57,19 +68,16 @@ class HotelsFragment : android.support.v4.app.Fragment(){
 //            val adapter = moshi.adapter<ArrayList<HotelModel>>(type)
 //            val users:ArrayList<HotelModel> = adapter.fromJson(data.toString()) as ArrayList<HotelModel>
 
-            val moshi = Moshi.Builder()
-                    .add(KotlinJsonAdapterFactory())
-                    .build()
-            val type = Types.newParameterizedType(List::class.java, HotelModel::class.java)
-            val adapter = moshi.adapter<ArrayList<HotelModel>>(type)
-            val text : String = "[{\"id\":4,\"name\":\"Divan Hotel\",\"link\":\"www.divanhotel.com\",\"star\":3,\"phone\":\"15367363507\",\"mail\":\"info@divanhotel.com\",\"county\":\"BAYRAMPA\\u015eA\",\"province\":\"\\u0130STANBUL\",\"address\":\"Alt\\u0131ntepsi Mah. Mete sk. no44\\/5\",\"detail\":\"popopoppop\"}]"
-            val users:ArrayList<HotelModel> = adapter.fromJson(text) as ArrayList<HotelModel>
+//            val moshi = Moshi.Builder()
+//                    .add(KotlinJsonAdapterFactory())
+//                    .build()
+//            val type = Types.newParameterizedType(List::class.java, HotelModel::class.java)
+//            val adapter = moshi.adapter<ArrayList<HotelModel>>(type)
+//            val text : String = "[{\"id\":4,\"name\":\"Divan Hotel\",\"link\":\"www.divanhotel.com\",\"star\":3,\"phone\":\"15367363507\",\"mail\":\"info@divanhotel.com\",\"county\":\"BAYRAMPA\\u015eA\",\"province\":\"\\u0130STANBUL\",\"address\":\"Alt\\u0131ntepsi Mah. Mete sk. no44\\/5\",\"detail\":\"popopoppop\"},{\"id\":4,\"name\":\"Divan Hotel\",\"link\":\"www.divanhotel.com\",\"star\":3,\"phone\":\"15367363507\",\"mail\":\"info@divanhotel.com\",\"county\":\"BAYRAMPA\\u015eA\",\"province\":\"\\u0130STANBUL\",\"address\":\"Alt\\u0131ntepsi Mah. Mete sk. no44\\/5\",\"detail\":\"popopoppop\"},{\"id\":4,\"name\":\"Divan Hotel\",\"link\":\"www.divanhotel.com\",\"star\":3,\"phone\":\"15367363507\",\"mail\":\"info@divanhotel.com\",\"county\":\"BAYRAMPA\\u015eA\",\"province\":\"\\u0130STANBUL\",\"address\":\"Alt\\u0131ntepsi Mah. Mete sk. no44\\/5\",\"detail\":\"popopoppop\"},{\"id\":4,\"name\":\"Divan Hotel\",\"link\":\"www.divanhotel.com\",\"star\":3,\"phone\":\"15367363507\",\"mail\":\"info@divanhotel.com\",\"county\":\"BAYRAMPA\\u015eA\",\"province\":\"\\u0130STANBUL\",\"address\":\"Alt\\u0131ntepsi Mah. Mete sk. no44\\/5\",\"detail\":\"popopoppop\"}]"
+//            val users:ArrayList<HotelModel> = adapter.fromJson(text) as ArrayList<HotelModel>
 
-            viewAdapter = HotelAdapter(users)
-            activity.run {  recyclerView.adapter = viewAdapter }
+//            viewAdapter = HotelAdapter(users)
+//            activity.run {  recyclerView.adapter = viewAdapter }
 
         }
     }
-
-
-}

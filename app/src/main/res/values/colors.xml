@@ -3,4 +3,7 @@
     <color name="colorPrimary">#f77b00</color>
     <color name="colorPrimaryDark">#995604</color>
     <color name="colorAccent">#915200</color>
+    <color name="opblack">#995604</color>
+    <color name="background">#ccc</color>
+    <color name="cell">#9b9892</color>
 </resources>
