@@ -7,22 +7,11 @@ import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
-import cemilcakir.com.hotel.Adapters.GalleryAdapter
-import cemilcakir.com.hotel.Adapters.HotelAdapter
 import cemilcakir.com.hotel.Adapters.RoomAdapter
-import cemilcakir.com.hotel.Models.GalleryModel
 import cemilcakir.com.hotel.Models.HotelModel
 import cemilcakir.com.hotel.Models.RoomModel
 import com.bumptech.glide.Glide
-import com.github.kittinunf.fuel.android.extension.responseJson
-import com.github.kittinunf.fuel.httpGet
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.activity_hotel_details.*
-import kotlinx.android.synthetic.main.activity_room_details.*
-import kotlinx.android.synthetic.main.appbar_hotel_details.*
-import kotlinx.android.synthetic.main.hotels_cell.*
 import kotlinx.android.synthetic.main.rooms_cell.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -65,12 +54,8 @@ class HotelDetailsActivity : AppCompatActivity() {
     fun handleJson(JsonString:String?){
 
         val rooms = ArrayList<RoomModel>()
+        val jsonArr = JSONArray(JsonString)
         try {
-            val jsonArr = JSONArray(JsonString)
-
-            println(jsonArr.length())
-
-
             var x = 0
             while(x < jsonArr.length()){
                 val jsonObj = jsonArr.getJSONObject(x)
@@ -99,13 +84,9 @@ class HotelDetailsActivity : AppCompatActivity() {
                 ))
         }
         finally {
-
             viewAdapter = RoomAdapter(rooms)
             recyclerView.adapter = viewAdapter
         }
-
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,9 +100,12 @@ class HotelDetailsActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = viewManager
 
+        val hotelImage = "http://206.189.239.139:8000/hotels/"+ hotelModel.id.toString()+"/images"
+
         Handler().postDelayed({
-            AsyncTaskHandleJSon().execute("http://206.189.239.139:8000/rooms")
-            AsyncTaskHandleJSonImage().execute("http://206.189.239.139:8000/rooms/2/images")
+            AsyncTaskHandleJSonHotelImage().execute(hotelImage)
+            AsyncTaskHandleJSon().execute("http://206.189.239.139:8000/hotels/4/rooms")
+            //AsyncTaskHandleJSonImage().execute("http://206.189.239.139:8000/rooms/2/images")
         }, 100)
 
         txtHotelDetail.text = hotelModel.hotelDetail
@@ -154,6 +138,35 @@ class HotelDetailsActivity : AppCompatActivity() {
         val jsonArr = JSONArray(JsonString)
         val jsonObj = jsonArr.getJSONObject(0)
         Glide.with(imgRoom).load("http://206.189.239.139:8000/"+jsonObj.getString("url")).into(imgRoom)
+
+    }
+
+    inner class AsyncTaskHandleJSonHotelImage: AsyncTask<String, String, String>(){
+        override fun doInBackground(vararg url: String?): String {
+
+            var text:String
+            val connection = URL(url[0]).openConnection() as HttpURLConnection
+            try {
+                connection.connect()
+                text = connection.inputStream.use { it.reader().use{reader -> reader.readText()} }
+            }
+            finally {
+                connection.disconnect()
+            }
+
+            return text
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            handleJsonHotelImage(result)
+        }
+    }
+
+    fun handleJsonHotelImage(JsonString:String?){
+        val jsonArr = JSONArray(JsonString)
+        val jsonObj = jsonArr.getJSONObject(0)
+        Glide.with(imgHotelDet).load("http://206.189.239.139:8000/"+jsonObj.getString("url")).into(imgHotelDet)
 
     }
 

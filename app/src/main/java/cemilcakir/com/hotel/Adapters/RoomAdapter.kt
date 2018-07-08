@@ -8,17 +8,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import cemilcakir.com.hotel.HotelDetailsActivity
-import cemilcakir.com.hotel.Models.HotelModel
 import cemilcakir.com.hotel.Models.RoomModel
 import cemilcakir.com.hotel.R
 import cemilcakir.com.hotel.RoomDetailsActivity
-import com.bumptech.glide.Glide
 
 class RoomAdapter(private val myDataset: ArrayList<RoomModel>) :
         RecyclerView.Adapter<RoomAdapter.ViewHolder>() {
 
     class ViewHolder(val  cardView:CardView) : RecyclerView.ViewHolder(cardView)
+
+    lateinit var imgR : ImageView
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): RoomAdapter.ViewHolder {

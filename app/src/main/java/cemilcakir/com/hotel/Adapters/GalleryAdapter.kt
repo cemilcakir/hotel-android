@@ -1,5 +1,7 @@
 package cemilcakir.com.hotel.Adapters
 
+import android.content.Intent
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import cemilcakir.com.hotel.Models.GalleryModel
 import cemilcakir.com.hotel.R
+import cemilcakir.com.hotel.SliderActivity
 import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 
 class GalleryAdapter(private val myDataset: ArrayList<GalleryModel>) :
         RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
@@ -27,7 +31,17 @@ class GalleryAdapter(private val myDataset: ArrayList<GalleryModel>) :
         val galleryModel:GalleryModel = myDataset.get(position)
 
         val img:ImageView = holder.cardView.findViewById(R.id.img)
-        Glide.with(img).load("http://206.189.239.139:8000/"+galleryModel.url).into(img)
+        //Glide.with(img).load("http://206.189.239.139:8000/"+galleryModel.url).into(img)
+        Picasso.get()
+                .load("http://206.189.239.139:8000/"+galleryModel.url)
+                .fit()
+                .centerCrop()
+                .into(img)
+
+        holder.cardView.setOnClickListener {
+            val i = Intent(it.context, SliderActivity::class.java)
+            startActivity(it.context, i ,null)
+        }
 
     }
 
