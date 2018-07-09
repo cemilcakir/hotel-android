@@ -10,6 +10,7 @@ data class HotelModel(
         val hotelCounty:String?,
         val hotelProvince:String?,
         val hotelAddress:String?,
-        val hotelDetail:String?
+        val hotelDetail:String?,
+        val hotelImage:String?
 
 )

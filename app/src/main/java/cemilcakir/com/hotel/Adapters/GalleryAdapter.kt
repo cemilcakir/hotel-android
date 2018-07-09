@@ -1,16 +1,16 @@
 package cemilcakir.com.hotel.Adapters
 
 import android.content.Intent
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import cemilcakir.com.hotel.ImageViewActivity
 import cemilcakir.com.hotel.Models.GalleryModel
 import cemilcakir.com.hotel.R
-import cemilcakir.com.hotel.SliderActivity
-import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 
 class GalleryAdapter(private val myDataset: ArrayList<GalleryModel>) :
@@ -39,10 +39,9 @@ class GalleryAdapter(private val myDataset: ArrayList<GalleryModel>) :
                 .into(img)
 
         holder.cardView.setOnClickListener {
-            val i = Intent(it.context, SliderActivity::class.java)
-            startActivity(it.context, i ,null)
+            val i = Intent(it.context, ImageViewActivity::class.java)
+            ContextCompat.startActivity(it.context, i , null)
         }
-
     }
 
     override fun getItemCount() = myDataset.size

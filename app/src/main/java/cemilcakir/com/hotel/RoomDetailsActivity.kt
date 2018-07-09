@@ -4,9 +4,13 @@ import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.view.PagerAdapter
 import android.view.MenuItem
+import cemilcakir.com.hotel.Adapters.ImageSliderAdapter
+import cemilcakir.com.hotel.Models.GalleryModel
 import cemilcakir.com.hotel.Models.RoomModel
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.activity_hotel_details.*
 import kotlinx.android.synthetic.main.activity_room_details.*
 import org.json.JSONArray
 import java.net.HttpURLConnection
@@ -23,6 +27,7 @@ class RoomDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_room_details)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle(roomModel.roomType + " Detayları")
 
         val roomImage = "http://206.189.239.139:8000/rooms/"+ roomModel.id.toString()+"/images"
 
@@ -61,8 +66,25 @@ class RoomDetailsActivity : AppCompatActivity() {
 
     fun handleJsonRoomImage(JsonString:String?){
         val jsonArr = JSONArray(JsonString)
-        val jsonObj = jsonArr.getJSONObject(0)
-        Glide.with(imgRoomDet).load("http://206.189.239.139:8000/"+jsonObj.getString("url")).into(imgRoomDet)
+
+        val images = ArrayList<GalleryModel>()
+        println(jsonArr.length())
+
+
+        var x = 0
+        while(x < jsonArr.length()){
+            val jsonObj = jsonArr.getJSONObject(x)
+            images.add(GalleryModel(
+                    jsonObj.getInt("id"),
+                    jsonObj.getString("description"),
+                    jsonObj.getString("url"),
+                    jsonObj.getInt("hotel_id")
+            ))
+            x++
+        }
+
+        var adapter : PagerAdapter = ImageSliderAdapter(this,images)
+        viewPagerRoomDetails.adapter=adapter
 
     }
 

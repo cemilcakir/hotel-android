@@ -4,14 +4,19 @@ import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.view.PagerAdapter
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
+import cemilcakir.com.hotel.Adapters.ImageSliderAdapter
 import cemilcakir.com.hotel.Adapters.RoomAdapter
+import cemilcakir.com.hotel.Models.GalleryModel
 import cemilcakir.com.hotel.Models.HotelModel
 import cemilcakir.com.hotel.Models.RoomModel
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_hotel_details.*
+import kotlinx.android.synthetic.main.activity_image_view.*
+import kotlinx.android.synthetic.main.activity_room_details.*
 import kotlinx.android.synthetic.main.rooms_cell.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -52,13 +57,18 @@ class HotelDetailsActivity : AppCompatActivity() {
     }
 
     fun handleJson(JsonString:String?){
-
         val rooms = ArrayList<RoomModel>()
         val jsonArr = JSONArray(JsonString)
+
         try {
             var x = 0
             while(x < jsonArr.length()){
                 val jsonObj = jsonArr.getJSONObject(x)
+                val link = "http://206.189.239.139:8000/rooms/"+jsonObj.getInt("id")+"/images"
+                val test = AsyncTaskHandleJSonImage().execute(link).get()
+                val hi:String = "http://206.189.239.139:8000"+test.substring(test.indexOf("\\/images"),test.indexOf("\"}")).replace("\\/","/")
+                println(hi)
+
                 rooms.add(RoomModel(
                         jsonObj.getInt("id"),
                         jsonObj.getString("type"),
@@ -66,13 +76,19 @@ class HotelDetailsActivity : AppCompatActivity() {
                         jsonObj.getInt("floor"),
                         jsonObj.getInt("size"),
                         jsonObj.getInt("capacity"),
-                        jsonObj.getDouble("price")
+                        jsonObj.getDouble("price"),
+                        hi
                 ))
                 x++
             }
         }
         catch (e:Exception){
             val jsonArr = JSONObject(JsonString)
+            val link = "http://206.189.239.139:8000/rooms/"+jsonArr.getInt("id")+"/images"
+            val test = AsyncTaskHandleJSonImage().execute(link).get()
+            val hi:String = "http://206.189.239.139:8000"+test.substring(test.indexOf("\\/images"),test.indexOf("\"}")).replace("\\/","/")
+            println(hi)
+
                 rooms.add(RoomModel(
                         jsonArr.getInt("id"),
                         jsonArr.getString("type"),
@@ -80,7 +96,8 @@ class HotelDetailsActivity : AppCompatActivity() {
                         jsonArr.getInt("floor"),
                         jsonArr.getInt("size"),
                         jsonArr.getInt("capacity"),
-                        jsonArr.getDouble("price")
+                        jsonArr.getDouble("price"),
+                        hi
                 ))
         }
         finally {
@@ -94,6 +111,7 @@ class HotelDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_hotel_details)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setTitle(hotelModel.hotelName+" Detayları")
 
         viewManager = LinearLayoutManager(this)
         recyclerView = findViewById(R.id.listRooms)
@@ -101,10 +119,11 @@ class HotelDetailsActivity : AppCompatActivity() {
         recyclerView.layoutManager = viewManager
 
         val hotelImage = "http://206.189.239.139:8000/hotels/"+ hotelModel.id.toString()+"/images"
+        val roomInfo = "http://206.189.239.139:8000/hotels/"+hotelModel.id+"/rooms"
 
         Handler().postDelayed({
             AsyncTaskHandleJSonHotelImage().execute(hotelImage)
-            AsyncTaskHandleJSon().execute("http://206.189.239.139:8000/hotels/4/rooms")
+            AsyncTaskHandleJSon().execute(roomInfo)
             //AsyncTaskHandleJSonImage().execute("http://206.189.239.139:8000/rooms/2/images")
         }, 100)
 
@@ -134,11 +153,12 @@ class HotelDetailsActivity : AppCompatActivity() {
         }
     }
 
-    fun handleJsonImage(JsonString:String?){
+    fun handleJsonImage(JsonString:String?):String{
         val jsonArr = JSONArray(JsonString)
         val jsonObj = jsonArr.getJSONObject(0)
-        Glide.with(imgRoom).load("http://206.189.239.139:8000/"+jsonObj.getString("url")).into(imgRoom)
-
+        //Glide.with(imgRoom).load("http://206.189.239.139:8000/"+jsonObj.getString("url")).into(imgRoom)
+        val tv:String = "http://206.189.239.139:8000/"+jsonObj.getString("url")
+        return tv
     }
 
     inner class AsyncTaskHandleJSonHotelImage: AsyncTask<String, String, String>(){
@@ -165,8 +185,25 @@ class HotelDetailsActivity : AppCompatActivity() {
 
     fun handleJsonHotelImage(JsonString:String?){
         val jsonArr = JSONArray(JsonString)
-        val jsonObj = jsonArr.getJSONObject(0)
-        Glide.with(imgHotelDet).load("http://206.189.239.139:8000/"+jsonObj.getString("url")).into(imgHotelDet)
+
+        val images = ArrayList<GalleryModel>()
+        println(jsonArr.length())
+
+
+        var x = 0
+        while(x < jsonArr.length()){
+            val jsonObj = jsonArr.getJSONObject(x)
+            images.add(GalleryModel(
+                    jsonObj.getInt("id"),
+                    jsonObj.getString("description"),
+                    jsonObj.getString("url"),
+                    jsonObj.getInt("hotel_id")
+            ))
+            x++
+        }
+
+        var adapter : PagerAdapter = ImageSliderAdapter(this,images)
+        viewPagerHotelDetails.adapter=adapter
 
     }
 
