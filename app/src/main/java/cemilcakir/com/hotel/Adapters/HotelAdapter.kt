@@ -34,7 +34,7 @@ class HotelAdapter(private val myDataset: ArrayList<HotelModel>) :
         txtHotelName.text = hotelModel.hotelName
 
         val txtHotelDetail: TextView = holder.cardView.findViewById(R.id.txtHotelDesc)
-        txtHotelDetail.text = hotelModel.hotelDetail
+        txtHotelDetail.text = hotelModel.hotelDetail!!.substring(0,25)+"..."
 
         val imgHotel:ImageView = holder.cardView.findViewById(R.id.imgHotel)
         Glide.with(imgHotel).load(hotelModel.hotelImage).into(imgHotel)

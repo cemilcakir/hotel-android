@@ -40,9 +40,6 @@ class ImageSliderAdapter:PagerAdapter{
         var image : PhotoView = view.findViewById(R.id.sliderImage)
         Glide.with(image).load("http://206.189.239.139:8000/"+galleryModel.url).into(image)
 
-        var desc :TextView = view.findViewById(R.id.txtImageDesc)
-        desc.text = galleryModel.description
-
         container.addView(view,0)
         return view
     }

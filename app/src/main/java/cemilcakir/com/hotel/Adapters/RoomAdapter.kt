@@ -36,7 +36,7 @@ class RoomAdapter(private val myDataset: ArrayList<RoomModel>) :
         txtRoomType.text = roomModel.roomType
 
         val txtRoomDetail: TextView = holder.cardView.findViewById(R.id.txtRoomDetail)
-        txtRoomDetail.text = roomModel.roomDetail
+        txtRoomDetail.text = roomModel.roomDetail!!.substring(0,25)+"..."
 
         val imgRoom:ImageView = holder.cardView.findViewById(R.id.imgRoom)
         Glide.with(imgRoom).load(roomModel.roomImage).into(imgRoom)
